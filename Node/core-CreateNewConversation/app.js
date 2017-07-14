@@ -29,14 +29,21 @@ var bot = new builder.UniversalBot(connector, function (session) {
     session.endDialog('You\'ve activated the 8-Ball, we will predict your future shortly...');
 });
 
-
+// array of 8-ball answers, why are there so many more than eight?
 var answers = [
-  'Maybe.', 'Certainly not.', 'I hope so.', 'Not in your wildest dreams.',
-  'There is a good chance.', 'Quite likely.', 'I think so.', 'I hope not.',
-  'I hope so.', 'Never!', 'Fuhgeddaboudit.', 'Ahaha! Really?!?', 'Pfft.',
-  'Sorry, bucko.', 'Hell, yes.', 'Hell to the no.', 'The future is bleak.',
-  'The future is uncertain.', 'I would rather not say.', 'Who cares?',
-  'Possibly.', 'Never, ever, ever.', 'There is a small chance.', 'Yes!'
+  
+'It is certain',
+'It is decidedly so',
+'Without a doubt',
+'Yes definitely',
+'You may rely on it',
+'As I see it, yes',
+'Most likely',
+'Outlook good',
+'Yes',
+'Signs point to yes',
+'Better not tell you now',
+'It\'s.... Complicated',
 ];
 
 var answer;
@@ -63,26 +70,39 @@ setInterval(function () {
         });
 
     });
-}, 5000);
+}, 1000);
 
 bot.dialog('survey', [
     function (session) {
-        builder.Prompts.text(session, 'Hello... What\'s your query?');
+        builder.Prompts.text(session, 'Hello, what would you ask of the 8-ball?');
     },
+
+    //8-ball is "shaken" and an answer is drawn at random
     function (session, results) {
         session.userData.name = results.response;
         //builder.Prompts.number(session, 'Hmmm... ' + results.response);
         answer = answers[Math.floor(Math.random() * answers.length)];
         builder.Prompts.text(session, 'Hmmm... ' + answer);
-    },
-    function (session, results) {
-        session.userData.coding = results.response;
-        builder.Prompts.choice(session, 'What would you like to do? ', ['Ask Another Question', 'Leave']);
+
     },
 
+    /**
+    *   Here's where I'd implement sentiment analysis to give a more robust 
+    *   array of responses (i.e. "Would you like to shake the 8-ball again?", 
+    *   "Sorry for the bad news", or "Congratulations!", etc);
+    **/
 
+   function (session, results) {
+        session.endDialog('Ask another?');
 
+    /** 
+     *  Instead of prefacing with "Ask another", perhaps anticipate a few different responses"
+     *  "That's great, thanks!"     (positive, replay or close) 
+     *  "Let me ask another?"       (prompt for replay)
+     *  "That's terrible,"          (console, then prompt for replay)
+    **/
 
+    },
 
 
 ]);
