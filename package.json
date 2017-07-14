@@ -1,0 +1,29 @@
+{
+  "name": "foo",
+  "version": "1.0.0",
+  "description": "Basic Convo Bot",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robdhyman/BotBuilder-Samples.git"
+  },
+  "keywords": [
+    "bot"
+  ],
+  "author": "Robert Hyman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/robdhyman/BotBuilder-Samples/issues"
+  },
+  "homepage": "https://github.com/robdhyman/BotBuilder-Samples#readme",
+  "dependencies": {
+    "botbuilder": "^3.8.4",
+    "dotenv-extended": "^2.0.1",
+    "install": "^0.10.1",
+    "npm": "^5.2.0",
+    "restify": "^5.0.0"
+  }
+}

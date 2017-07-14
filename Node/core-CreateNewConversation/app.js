@@ -19,20 +19,34 @@ server.post('/api/messages', connector.listen());
 
 var userStore = [];
 var bot = new builder.UniversalBot(connector, function (session) {
+
+
     // store user's address
     var address = session.message.address;
     userStore.push(address);
 
     // end current dialog
-    session.endDialog('You\'ve been invited to a survey! It will start in a few seconds...');
+    session.endDialog('You\'ve activated the 8-Ball, we will predict your future shortly...');
 });
+
+
+var answers = [
+  'Maybe.', 'Certainly not.', 'I hope so.', 'Not in your wildest dreams.',
+  'There is a good chance.', 'Quite likely.', 'I think so.', 'I hope not.',
+  'I hope so.', 'Never!', 'Fuhgeddaboudit.', 'Ahaha! Really?!?', 'Pfft.',
+  'Sorry, bucko.', 'Hell, yes.', 'Hell to the no.', 'The future is bleak.',
+  'The future is uncertain.', 'I would rather not say.', 'Who cares?',
+  'Possibly.', 'Never, ever, ever.', 'There is a small chance.', 'Yes!'
+];
+
+var answer;
 
 // Every 5 seconds, check for new registered users and start a new dialog
 setInterval(function () {
     var newAddresses = userStore.splice(0);
     newAddresses.forEach(function (address) {
 
-        console.log('Starting survey for address:', address);
+        console.log('Starting 8-Ball for address: ', address);
 
         // new conversation address, copy without conversationId
         var newConversationAddress = Object.assign({}, address);
@@ -53,20 +67,22 @@ setInterval(function () {
 
 bot.dialog('survey', [
     function (session) {
-        builder.Prompts.text(session, 'Hello... What\'s your name?');
+        builder.Prompts.text(session, 'Hello... What\'s your query?');
     },
     function (session, results) {
         session.userData.name = results.response;
-        builder.Prompts.number(session, 'Hi ' + results.response + ', How many years have you been coding?');
+        //builder.Prompts.number(session, 'Hmmm... ' + results.response);
+        answer = answers[Math.floor(Math.random() * answers.length)];
+        builder.Prompts.text(session, 'Hmmm... ' + answer);
     },
     function (session, results) {
         session.userData.coding = results.response;
-        builder.Prompts.choice(session, 'What language do you code Node using? ', ['JavaScript', 'CoffeeScript', 'TypeScript']);
+        builder.Prompts.choice(session, 'What would you like to do? ', ['Ask Another Question', 'Leave']);
     },
-    function (session, results) {
-        session.userData.language = results.response.entity;
-        session.endDialog('Got it... ' + session.userData.name +
-            ' you\'ve been programming for ' + session.userData.coding +
-            ' years and use ' + session.userData.language + '.');
-    }
+
+
+
+
+
+
 ]);
