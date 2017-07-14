@@ -92,16 +92,10 @@ bot.dialog('survey', [
     *   "Sorry for the bad news", or "Congratulations!", etc);
     **/
 
+
+    // this funciton to be replaced by more robust solution in comment above
    function (session, results) {
         session.endDialog('Ask another?');
-
-    /** 
-     *  Instead of prefacing with "Ask another", perhaps anticipate a few different responses"
-     *  "That's great, thanks!"     (positive, replay or close) 
-     *  "Let me ask another?"       (prompt for replay)
-     *  "That's terrible,"          (console, then prompt for replay)
-    **/
-
     },
 
 
